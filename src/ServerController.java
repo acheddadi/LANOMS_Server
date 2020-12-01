@@ -63,17 +63,17 @@ public class ServerController implements ServerListener {
 		return account.get(i).uSettings.getIMAGE();
 	}
 
-	public static String getConversationCount(int i) {
+	public static String getConversationCount(String username) {
 		// Input: Index of account array
 		// Output: Size of conversation
-		return account.get(i).conversations.size() + "";
+		return mapper.get(username).conversations.size() + "";
 	}
 
-	public static String getMessageCount(int i, int j) {
+	public static String getMessageCount(String username, int j) {
 		// Input: i = index of account array
 		// j = index of conversation array
 		// Output: number of messages in the conversation
-		return account.get(i).conversations.get(j).getChatLog().size() + "";
+		return mapper.get(username).conversations.get(j).getChatLog().size() + "";
 	}
 
 	public static String getMessage(int i, int j, int k) {
@@ -259,11 +259,11 @@ public class ServerController implements ServerListener {
 						res = getUserInfo(Utility.convertToInt(data.getData()));
 						break;
 					case "CONV_COUNT":
-						res = getConversationCount(Utility.convertToInt(data.getData()));
+						res = getConversationCount(data.getData());
 						break;
 					case "MSG_COUNT":
 						parts = data.getData().split("\n");
-						res = getMessageCount(Utility.convertToInt(parts[0]), Utility.convertToInt(parts[1]));
+						res = getMessageCount(parts[0], Utility.convertToInt(parts[1]));
 						break;
 					case "GET_MSG":
 						parts = data.getData().split("\n");
