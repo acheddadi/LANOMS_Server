@@ -89,17 +89,17 @@ public class ServerController implements ServerListener {
 	public static void makeAccounts() {
 		// Existing accounts
 
-		User ali = new User("ali", "", "Ali", "CS", "Ali@email.com");
+		User ali = new User("ali", "test", "Ali", "CS", "Ali@email.com");
 		Account a = new Account(ali);
 		account.add(a);
 		mapper.put(a.user.getUsername(), a);
 
-		User nik = new User("nik", "", "Nik", "CS", "Nik@email.com");
+		User nik = new User("nik", "test", "Nik", "CS", "Nik@email.com");
 		Account n = new Account(nik);
 		account.add(n);
 		mapper.put(n.user.getUsername(), n);
 
-		User shree = new User("shree", "", "Shree", "CS", "Shree@email.com");
+		User shree = new User("shree", "test", "Shree", "CS", "Shree@email.com");
 		Account s = new Account(shree);
 		account.add(s);
 		mapper.put(s.user.getUsername(), s);
