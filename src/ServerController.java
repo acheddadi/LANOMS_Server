@@ -247,16 +247,16 @@ public class ServerController implements ServerListener {
 						res = getConversationCount(Utility.convertToInt(data.getData()));
 						break;
 					case "MSG_COUNT":
-						parts = data.getData().split("#");
+						parts = data.getData().split("\n");
 						res = getMessageCount(Utility.convertToInt(parts[0]), Utility.convertToInt(parts[1]));
 						break;
 					case "GET_MSG":
-						parts = data.getData().split("#");
+						parts = data.getData().split("\n");
 						res = getMessage(Utility.convertToInt(parts[0]), Utility.convertToInt(parts[1]),
 								Utility.convertToInt(parts[2]));
 						break;
 					case "MAKE_CONV":
-						parts = data.getData().split("#");
+						parts = data.getData().split("\n");
 						makeConversation(Utility.convertToInt(parts[0]), Utility.convertToInt(parts[1]));
 						break;
 					case "MAKE_MESSAGE":
@@ -270,7 +270,7 @@ public class ServerController implements ServerListener {
 						res = getUserDisplayPicture(Utility.convertToInt(data.getData())) + "";
 						break;
 					case "USER_AUTH":
-						parts = data.getData().split("#");
+						parts = data.getData().split("\n");
                         res = checkValidLogin(parts[0], parts[1]) + "";
                         break;
 					default:
