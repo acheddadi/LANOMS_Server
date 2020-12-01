@@ -1,7 +1,5 @@
 import java.io.Serializable;
 
-import javafx.scene.image.Image;
-
 public class UserSettings implements Serializable {
 	private byte[] image;
 	private String status;

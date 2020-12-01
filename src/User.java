@@ -1,7 +1,5 @@
 import java.io.Serializable;
 
-import javafx.application.*;
-
 public class User implements Serializable {
 	private String username;
 	private String password;
