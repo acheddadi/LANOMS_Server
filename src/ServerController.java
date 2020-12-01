@@ -38,8 +38,6 @@ public class ServerController implements ServerListener {
 		// User Index 1 adds index 0 to convo
 		//account.get(1).addToConvo(1, account.get(0));
 		
-		ServerController controller = new ServerController();
-		controller.init();
 		backup();
 		}
 		else {
@@ -57,6 +55,9 @@ public class ServerController implements ServerListener {
 				}
 			}
 		}
+		
+		ServerController controller = new ServerController();
+		controller.init();
 	}
 
 	public void init(){
