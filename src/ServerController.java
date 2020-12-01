@@ -18,6 +18,8 @@ public class ServerController implements ServerListener {
 
 	static ArrayList<Account> account = new ArrayList<Account>();
 	static HashMap<String, Account> mapper = new HashMap<String, Account>();
+	
+	static HashMap<String, String> loggedIn = new HashMap<String, String>();
 
 	public static void main(String[] args) {
 		// Make accounts (can make it to load existing accounts in future).
