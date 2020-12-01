@@ -78,14 +78,14 @@ public class ServerController implements ServerListener {
 		return mapper.get(username).conversations.get(j).getChatLog().size() + "";
 	}
 
-	public static String getMessage(int i, int j, int k) {
-		// Input: i = index of account array
+	public static String getMessage(String username, int j, int k) {
+		// Input: username = username
 		// j = index of conversation array
 		// k = index of message array
 		// Output: The message as NAME \n MESSAGE
 
-		return account.get(i).conversations.get(j).getChatLog().get(k).getSender() + "\n"
-				+ account.get(i).conversations.get(j).getChatLog().get(k).getMessage();
+		return mapper.get(username).conversations.get(j).getChatLog().get(k).getSender() + "\n"
+				+ mapper.get(username).conversations.get(j).getChatLog().get(k).getMessage();
 	}
 
 	// Add additional accounts
@@ -269,7 +269,7 @@ public class ServerController implements ServerListener {
 						break;
 					case "GET_MSG":
 						parts = data.getData().split("\n");
-						res = getMessage(Utility.convertToInt(parts[0]), Utility.convertToInt(parts[1]),
+						res = getMessage(parts[0], Utility.convertToInt(parts[1]),
 								Utility.convertToInt(parts[2]));
 						break;
 					case "MAKE_CONV":
