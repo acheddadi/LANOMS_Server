@@ -270,7 +270,8 @@ public class ServerController implements ServerListener {
 						res = getUserDisplayPicture(Utility.convertToInt(data.getData())) + "";
 						break;
 					case "USER_AUTH":
-                        res = checkValidLogin(data.getData(), data.getData()) + "";
+						parts = data.getData().split("#");
+                        res = checkValidLogin(parts[0], parts[1]) + "";
                         break;
 					default:
 						System.out.println("Result Key not handled: " + data.getKey());
