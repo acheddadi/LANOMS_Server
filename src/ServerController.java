@@ -1,10 +1,12 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -23,11 +25,14 @@ public class ServerController implements ServerListener {
 
 	public static void main(String[] args) {
 		// Make accounts (can make it to load existing accounts in future).
+		boolean file = new File(".\\backup\\lastSave").exists();
+		if (!file)
+		{
 		makeAccounts();
 		makeConversation(0, 1);
 		makeConversation(1, 2);
-		makeMessage("ali", "Hello Nik", 0);
-		makeMessage("nik", "Hi Ali", 0);
+		makeMessage("ali", 0, "Hello Nik");
+		makeMessage("nik", 0, "Hi Ali");
 
 		makeConversation(2, 1);
 		makeConversation(1, 2);
@@ -37,6 +42,22 @@ public class ServerController implements ServerListener {
 		ServerController controller = new ServerController();
 		controller.init();
 		backup();
+		}
+		else {
+			File dir = new File(".\\backup\\lastSave");
+			File [] files = dir.listFiles(new FilenameFilter() {
+			    public boolean accept(File dir, String name) {
+			        return name.endsWith(".lanoms");
+			    }
+			});
+			for (File lanoms : files) {
+				Account temp = pullAccount(lanoms);
+				if (mapper.get(temp.user.getUsername()) == null) {
+					mapper.put(temp.user.getUsername(), temp);
+					account.add(temp);
+				}
+			}
+		}
 	}
 
 	public void init(){
@@ -124,14 +145,13 @@ public class ServerController implements ServerListener {
 		return (mapper.get(name).user.verifyPassword(pass)); // checks if password is valid
 	}
 
-	public static Message makeMessage(String username, String message, int ID) {
+	public static void makeMessage(String username, int ID, String message) {
 		// Input: String Username, String message, int Index of conversation
 		// Saves to the server.
 		// Output = Message object
-
+		
 		Message mes = new Message(mapper.get(username).user, message);
 		mapper.get(username).conversations.get(ID).addMessage(mes, mapper.get(username).user);
-		return mes;
 	}
 	
 	public static void setStatus(String username, int stat) {
@@ -225,10 +245,10 @@ public class ServerController implements ServerListener {
 	      }
 	}
 	
-	public static Account pullAccount(String username) {
+	public static Account pullAccount(File lanoms) {
 		// Pulls saved account from username (Need to move the file to backup folder). 
 		try {
-	         FileInputStream fileName = new FileInputStream("backup\\" + username + ".lanoms");
+	         FileInputStream fileName = new FileInputStream(lanoms);
 	         ObjectInputStream in = new ObjectInputStream(fileName);
 	         Account a = (Account) in.readObject();
 	         in.close();
@@ -277,8 +297,8 @@ public class ServerController implements ServerListener {
 						makeConversation(Utility.convertToInt(parts[0]), Utility.convertToInt(parts[1]));
 						break;
 					case "MAKE_MESSAGE":
-						MakeMessage makeMessage = Utility.toMessage(data.getByteData(), MakeMessage.class);
-						makeMessage(makeMessage.getUsername(), makeMessage.getMessgae(), makeMessage.getId());
+						parts = data.getData().split("\n");
+						makeMessage(parts[0], Utility.convertToInt(parts[1]), parts[2]);
 						break;
 					case "ALL_STATUS":
 						res = getAllStatus();
