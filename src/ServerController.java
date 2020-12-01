@@ -34,6 +34,7 @@ public class ServerController implements ServerListener {
 
 		ServerController controller = new ServerController();
 		controller.init();
+		backup();
 	}
 
 	public void init(){
@@ -167,8 +168,9 @@ public class ServerController implements ServerListener {
 		String datex = year + "_" + month + "_" + day;
 		// Saves all accounts into backup folder.
 		File makedir = new File(".\\backup\\" + datex);
-		 boolean dirCreated = makedir.mkdirs();
-		 
+		File makedir2 = new File(".\\backup\\lastSave");
+		boolean dirCreated = makedir.mkdirs();
+		makedir2.mkdirs();
 		for (String key : mapper.keySet()) {
 			try {
 				 if (dirCreated) {
@@ -179,6 +181,17 @@ public class ServerController implements ServerListener {
 		         fileName.close();
 		         System.out.println("Account " + mapper.get(key).user.getUsername() + " saved!");
 				 }
+		      } catch (IOException e) {
+		         e.printStackTrace();
+		      }
+			
+			try {
+		         FileOutputStream fileName = new FileOutputStream(makedir2 +"\\"+ mapper.get(key).user.getUsername()+".lanoms");
+		         ObjectOutputStream out = new ObjectOutputStream(fileName);
+		         out.writeObject(mapper.get(key));
+		         out.close();
+		         fileName.close();
+		         System.out.println("Account " + mapper.get(key).user.getUsername() + " Last Backup Saved!");
 		      } catch (IOException e) {
 		         e.printStackTrace();
 		      }
