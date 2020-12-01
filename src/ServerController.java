@@ -84,7 +84,7 @@ public class ServerController implements ServerListener {
 		// k = index of message array
 		// Output: The message as NAME \n MESSAGE
 
-		return mapper.get(username).conversations.get(j).getChatLog().get(k).getSender() + "\n"
+		return mapper.get(username).conversations.get(j).getChatLog().get(k).getSender().getUsername() + "\n"
 				+ mapper.get(username).conversations.get(j).getChatLog().get(k).getMessage();
 	}
 
