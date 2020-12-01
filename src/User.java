@@ -1,6 +1,7 @@
 import java.io.Serializable;
 
 public class User implements Serializable {
+	public static final int INVALID_USER = 0, VALID_USER = 1;
 	private String username;
 	private String password;
 	private String name;
@@ -32,14 +33,7 @@ public class User implements Serializable {
 	
 	// Getters
 	public int verifyPassword(String s) {
-		if (this.password.isEmpty()) {
-			setPassword(s);
-			return 1;
-		}
-		if (this.password.equals(s)) {
-			return 1;
-		}
-		else return 0;
+		return this.password.equals(s) ? VALID_USER : INVALID_USER;
 	}
 	
 	public String getUsername() {

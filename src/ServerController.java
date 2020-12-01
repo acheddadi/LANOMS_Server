@@ -117,7 +117,7 @@ public class ServerController implements ServerListener {
 		// Output: String true or false. true = Valid pass. false = Invalid pass.
 		System.out.println("Login with: " + name + " " + pass);
 		
-		if (mapper.get(name) == null) return 0;
+		if (mapper.get(name) == null) return User.INVALID_USER;
 		return (mapper.get(name).user.verifyPassword(pass)); // checks if password is valid
 	}
 
