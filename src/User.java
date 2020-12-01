@@ -32,11 +32,11 @@ public class User implements Serializable {
 	
 	// Getters
 	public int verifyPassword(String s) {
-		if (this.password == null) {
+		if (this.password.isEmpty()) {
 			setPassword(s);
 			return 1;
 		}
-		if (this.password == s) {
+		if (this.password.equals(s)) {
 			return 1;
 		}
 		else return 0;
