@@ -181,14 +181,13 @@ public class ServerController implements ServerListener {
 		return (mapper.get(name).user.verifyPassword(pass)); // checks if password is valid
 	}
 
-	public static int makeMessage(String username, int ID, String message) {
+	public static void makeMessage(String username, int ID, String message) {
 		// Input: String Username, String message, int Index of conversation
 		// Saves to the server.
 		// Output = Message object
 		
 		Message mes = new Message(mapper.get(username).user, message);
 		mapper.get(username).conversations.get(ID).addMessage(mes, mapper.get(username).user);
-		return mapper.get(username).conversations.get(ID).getParticipantList().size();
 	}
 	
 	public static void setStatus(String username, int stat) {
