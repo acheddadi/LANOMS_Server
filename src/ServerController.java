@@ -106,6 +106,11 @@ public class ServerController implements ServerListener {
 				+ account.get(i).uSettings.getStatus() + "\n" + account.get(i).user.getDepartment() + "\n"
 				+ account.get(i).user.getEmail() + "\n";
 	}
+	
+	public static void setUserInfo(String user, String profile, String status) {
+		mapper.get(user).uSettings.setMessage(profile);
+		mapper.get(user).uSettings.setStatus(status);
+	}
 
 	public byte[] getUserDisplayPicture(int i) {
 		return account.get(i).uSettings.getIMAGE();
@@ -153,6 +158,24 @@ public class ServerController implements ServerListener {
 		Account s = new Account(shree);
 		account.add(s);
 		mapper.put(s.user.getUsername(), s);
+		
+		User john = new User("john", "test", "John", "CS", "John@email.com");
+		Account j = new Account(john);
+		account.add(j);
+		mapper.put(j.user.getUsername(), j);
+		
+		User jim = new User("jim", "test", "Jim", "CS", "Jim@email.com");
+		Account ji = new Account(jim);
+		account.add(ji);
+		mapper.put(ji.user.getUsername(), ji);
+		
+		User lara = new User("lara", "test", "Lara", "CS", "Lara@email.com");
+		Account l = new Account(lara);
+		account.add(l);
+		mapper.put(l.user.getUsername(), l);
+		
+		
+		
 	}
 
 	public static void makeConversation(String user1, String user2) { // make conversations in server
@@ -314,6 +337,9 @@ public class ServerController implements ServerListener {
 					case "USER_INFO":
 						res = getUserInfo(Utility.convertToInt(data.getData()));
 						break;
+					case "MAKE_USER_INFO":
+						parts = data.getData().split("\n");
+						setUserInfo(parts[0], parts[1], parts[2]);
 					case "CONV_COUNT":
 						res = getConversationCount(data.getData());
 						break;
@@ -392,6 +418,7 @@ public class ServerController implements ServerListener {
 		for (UserIP a : onlineClients) {
 			if (a.getIP().equals(socket.getRemoteSocketAddress().toString())) {
 				System.out.println("USER DISCONNECTED: " + a.getUsername() + " IP: " + a.getIP());
+				mapper.get(a.getUsername()).uSettings.setStatus("Offline");
 				onlineClients.remove(a);
 			}
 		}
