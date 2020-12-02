@@ -53,6 +53,9 @@ public class ServerController implements ServerListener {
 		//makeConversation(1, 2);
 		makeMessage("ali", 0, "Hello Nik");
 		makeMessage("nik", 0, "Hi Ali");
+		
+		makeConversation(0, 2);
+		makeMessage("ali", 1, "Hey Shree");
 
 		//makeConversation(2, 1);
 		//makeConversation(1, 2);
