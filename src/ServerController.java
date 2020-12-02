@@ -36,6 +36,9 @@ public class ServerController implements ServerListener {
 	static HashMap<String, Account> mapper = new HashMap<String, Account>();
 	
 	static HashMap<String, String> loggedIn = new HashMap<String, String>();
+	
+	static HashMap<String, Client> onlineClients = new HashMap<String, Client>();
+	
 
 	public static void main(String[] args) {
 		// Make accounts (can make it to load existing accounts in future).
@@ -178,13 +181,14 @@ public class ServerController implements ServerListener {
 		return (mapper.get(name).user.verifyPassword(pass)); // checks if password is valid
 	}
 
-	public static void makeMessage(String username, int ID, String message) {
+	public static int makeMessage(String username, int ID, String message) {
 		// Input: String Username, String message, int Index of conversation
 		// Saves to the server.
 		// Output = Message object
 		
 		Message mes = new Message(mapper.get(username).user, message);
 		mapper.get(username).conversations.get(ID).addMessage(mes, mapper.get(username).user);
+		return mapper.get(username).conversations.get(ID).getParticipantList().size();
 	}
 	
 	public static void setStatus(String username, int stat) {
@@ -331,7 +335,15 @@ public class ServerController implements ServerListener {
 						break;
 					case "MAKE_MESSAGE":
 						parts = data.getData().split("\n");
-						makeMessage(parts[0], Utility.convertToInt(parts[1]), parts[2]);
+						String message = "";
+						int numParti = makeMessage(parts[0], Utility.convertToInt(parts[1]), parts[2]);
+						for (int i = 0; i < numParti; i++) {
+						String clientName = mapper.get(parts[0]).conversations.get(Utility.convertToInt(parts[1])).getParticipantList().get(0).getUsername();
+						message = parts[0] + "\n";
+						message = message + mapper.get(clientName).getConvoID(mapper.get(parts[0]).conversations.get(Utility.convertToInt(parts[1]))) + "\n";
+						message = message + parts[2];
+						onlineClients.get(clientName).send(data.getKey(),message);
+						}
 						break;
 					case "ALL_STATUS":
 						res = getAllStatus();
@@ -342,6 +354,11 @@ public class ServerController implements ServerListener {
 					case "USER_AUTH":
 						parts = data.getData().split("\n");
                         res = checkValidLogin(parts[0], parts[1]) + "";
+                        if(res == "1") {
+                        	if (onlineClients.get(parts[0]) == null) {
+                        	onlineClients.put(parts[0], client);
+                        	}
+                        }
                         break;
 					default:
 						System.out.println("Result Key not handled: " + data.getKey());
@@ -364,13 +381,13 @@ public class ServerController implements ServerListener {
 	@Override
 	public void onAccept(Socket socket) {
 		System.out.println("User Connected from: " + socket.getRemoteSocketAddress().toString());
-
+		
 	}
 
 	@Override
 	public void onDisconnect(Socket socket) {
 		System.out.println("User Disconnected from: " + socket.getRemoteSocketAddress().toString());
-
+		
 	}
 
 	@Override
