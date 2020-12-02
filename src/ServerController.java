@@ -57,7 +57,8 @@ public class ServerController implements ServerListener {
 		//makeConversation(2, 1);
 		//makeConversation(1, 2);
 		// User Index 1 adds index 0 to convo
-		//account.get(1).addToConvo(1, account.get(0));
+		addToConvo(0,2,0);
+		
 		
 		//backup();
 		//}
@@ -95,6 +96,7 @@ public class ServerController implements ServerListener {
 	
 	
 
+	
 	public void init(){
 
 		SocketServer socketServer = new SocketServer(9009, this);
@@ -102,6 +104,8 @@ public class ServerController implements ServerListener {
 		System.out.println("Socket Server Started");
 	}
 
+	
+	
 	public static String getUserCount() {
 		// Input - None
 		// Output - Number of users in the system
@@ -172,6 +176,10 @@ public class ServerController implements ServerListener {
 		account.get(j).conversations.add(cov);
 		makeMessage(account.get(i).user.getUsername(), account.get(i).conversations.size()-1, "@server has joined the chat.");
 		makeMessage(account.get(j).user.getUsername(), account.get(j).conversations.size()-1, "@server has joined the chat.");
+	}
+	
+	public static void addToConvo(int userID1, int userID2, int convoID) {
+		account.get(userID1).addToConvo(convoID, account.get(userID2));
 	}
 
 	public static int checkValidLogin(String name, String pass) {
