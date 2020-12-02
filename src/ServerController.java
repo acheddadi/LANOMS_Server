@@ -44,39 +44,18 @@ public class ServerController implements ServerListener {
 
 	public static void main(String[] args) {
 		// Make accounts (can make it to load existing accounts in future).
-		//File dir = new File(".\\backup\\lastSave");
-		//boolean exist = dir.exists();
-		//if (!exist)
-		//{
+		File dir = new File(".\\backup\\lastSave");
+		boolean exist = dir.exists();
 		makeAccounts();
 		makeConversation(0, 1);
-		//makeConversation(1, 2);
 		makeMessage("ali", 0, "Hello Nik");
 		makeMessage("nik", 0, "Hi Ali");
-
-		//makeConversation(2, 1);
-		//makeConversation(1, 2);
-		// User Index 1 adds index 0 to convo
 		addToConvo(0,2,0);
 		
-		
-		//backup();
-		//}
-//		else {
-//			
-//			File [] files = dir.listFiles(new FilenameFilter() {
-//			    public boolean accept(File dir, String name) {
-//			        return name.endsWith(".lanoms");
-//			    }
-//			});
-//			for (File lanoms : files) {
-//				Account temp = pullAccount(lanoms);
-//				if (mapper.get(temp.user.getUsername()) == null) {
-//					mapper.put(temp.user.getUsername(), temp);
-//					account.add(temp);
-//				}
-//			}
-//		}
+		if (!exist)
+		{
+			backup();
+		}
 //		
 		 Timer timer = new Timer();
 		 TimerTask save= new TimerTask() {
