@@ -50,8 +50,6 @@ public class ServerController implements ServerListener {
 		makeConversation(0, 1);
 		makeMessage("ali", 0, "Hello Nik");
 		makeMessage("nik", 0, "Hi Ali");
-<<<<<<< HEAD
-=======
 		
 		makeConversation(0, 2);
 		makeMessage("ali", 1, "Hey Shree");
@@ -59,7 +57,7 @@ public class ServerController implements ServerListener {
 		//makeConversation(2, 1);
 		//makeConversation(1, 2);
 		// User Index 1 adds index 0 to convo
->>>>>>> 32328c4300de802d0727fb4b968e46198aa88821
+		
 		addToConvo(0,2,0);
 		
 		if (!exist)
