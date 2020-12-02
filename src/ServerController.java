@@ -180,6 +180,7 @@ public class ServerController implements ServerListener {
 	
 	public static void addToConvo(int userID1, int userID2, int convoID) {
 		account.get(userID1).addToConvo(convoID, account.get(userID2));
+		makeMessage(account.get(userID2).user.getUsername(), account.get(userID2).conversations.size()-1, "@server has joined the chat.");
 	}
 
 	public static int checkValidLogin(String name, String pass) {
@@ -347,6 +348,10 @@ public class ServerController implements ServerListener {
 					case "MAKE_CONV":
 						parts = data.getData().split("\n");
 						makeConversation(Utility.convertToInt(parts[0]), Utility.convertToInt(parts[1]));
+						break;
+					case "ADD_TO_CONVO":
+						parts = data.getData().split("\n");
+						addToConvo(Utility.convertToInt(parts[0]), Utility.convertToInt(parts[1]), Utility.convertToInt(parts[2]));
 						break;
 					case "MAKE_MESSAGE":
 						parts = data.getData().split("\n");
