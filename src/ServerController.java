@@ -48,12 +48,12 @@ public class ServerController implements ServerListener {
 		{
 		makeAccounts();
 		makeConversation(0, 1);
-		makeConversation(1, 2);
+		//makeConversation(1, 2);
 		makeMessage("ali", 0, "Hello Nik");
 		makeMessage("nik", 0, "Hi Ali");
 
-		makeConversation(2, 1);
-		makeConversation(1, 2);
+		//makeConversation(2, 1);
+		//makeConversation(1, 2);
 		// User Index 1 adds index 0 to convo
 		//account.get(1).addToConvo(1, account.get(0));
 		
