@@ -170,8 +170,8 @@ public class ServerController implements ServerListener {
 		Conversation cov = new Conversation(account.get(i).user, account.get(j).user);
 		account.get(i).conversations.add(cov);
 		account.get(j).conversations.add(cov);
-		makeMessage(account.get(i).user.getUsername(), account.get(i).conversations.size()-1, " has joined the chat.");
-		makeMessage(account.get(j).user.getUsername(), account.get(j).conversations.size()-1, " has joined the chat.");
+		makeMessage(account.get(i).user.getUsername(), account.get(i).conversations.size()-1, "@server has joined the chat.");
+		makeMessage(account.get(j).user.getUsername(), account.get(j).conversations.size()-1, "@server has joined the chat.");
 	}
 
 	public static int checkValidLogin(String name, String pass) {
