@@ -52,6 +52,13 @@ public class ServerController implements ServerListener {
 		
 		makeConversation("ali", "shree");
 		makeMessage("ali", 1, "Hey Shree");
+		
+		makeConversation("ali","nik");
+		addToConvo(0,2,2);
+		addToConvo(0,3,2);
+		addToConvo(0,4,2);
+		addToConvo(0,5,2);
+		makeMessage("ali", 2, "Ayy! It's the whole gang!");
 
 		//makeConversation(2, 1);
 		//makeConversation(1, 2);
