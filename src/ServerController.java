@@ -354,7 +354,7 @@ public class ServerController implements ServerListener {
 					case "USER_AUTH":
 						parts = data.getData().split("\n");
                         res = checkValidLogin(parts[0], parts[1]) + "";
-                        if(res == "1") {
+                        if(res.equals("1")) {
                         	if (onlineClients.get(parts[0]) == null) {
                         	onlineClients.put(parts[0], client);
                         	}
