@@ -162,6 +162,7 @@ public class ServerController implements ServerListener {
 		mapper.get(user2).conversations.add(cov);
 		makeMessage(mapper.get(user1).user.getUsername(), mapper.get(user1).conversations.size()-1, "@server has joined the conversation.");
 		makeMessage(mapper.get(user2).user.getUsername(), mapper.get(user2).conversations.size()-1, "@server has joined the conversation.");
+		System.out.println("CONVO CREATED FOR: " + user1 + " AND " + user2);
 	}
 	
 	public static void addToConvo(int userID1, int userID2, int convoID) {
@@ -185,12 +186,6 @@ public class ServerController implements ServerListener {
 		
 		Message mes = new Message(mapper.get(username).user, message);
 		mapper.get(username).conversations.get(ID).addMessage(mes, mapper.get(username).user);
-		System.out.println("ID IS: " + ID);
-		
-		
-		
-		System.out.println("makeMessage: " + mapper.get(username).conversations.get(ID));
-		System.out.println("getMessage: " + mapper.get("nik").getConvoID(mapper.get(username).conversations.get(ID)));
 	}
 	
 	public static void setStatus(String username, int stat) {
@@ -332,6 +327,7 @@ public class ServerController implements ServerListener {
 								Utility.convertToInt(parts[2]));
 						break;
 					case "MAKE_CONVO":
+						System.out.println("???");
 						parts = data.getData().split("\n");
 						makeConversation(parts[0], parts[1]);
 						break;
