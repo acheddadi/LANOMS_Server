@@ -241,7 +241,12 @@ public class ServerController implements ServerListener {
 		return stat;
 	}
 	
-	
+	public static String getCurrentInfo(String username) {
+		String s = "";
+		s = s + mapper.get(username).uSettings.getMessage() + "\n";
+		s = s + mapper.get(username).uSettings.getStatus();
+		return s;
+	}
 	
 	
 	public static void backup() {
@@ -343,6 +348,9 @@ public class ServerController implements ServerListener {
 						break;
 					case "USER_INFO":
 						res = getUserInfo(Utility.convertToInt(data.getData()));
+						break;
+					case "GET_CURRENT_INFO":
+						res = getCurrentInfo(data.getData());
 						break;
 					case "MAKE_USER_INFO":
 						parts = data.getData().split("\n");
