@@ -18,6 +18,19 @@ import java.util.TimerTask;
 public class ServerController implements ServerListener {
 
 	// static HashMap<String, Account> account = new HashMap<String, Account>();
+	
+	static class Server_GUI implements Runnable {
+		Server_GUI(){
+			
+		}
+
+		@Override
+		public void run() {
+			
+			
+		}
+		 
+	 }
 
 	static ArrayList<Account> account = new ArrayList<Account>();
 	static HashMap<String, Account> mapper = new HashMap<String, Account>();
@@ -68,10 +81,17 @@ public class ServerController implements ServerListener {
 		};
 		// Runs backup saves at 1000ms * 60 * 60 * 24. Every day
 		 timer.scheduleAtFixedRate(save, 0, 1000*60*60*24);
+		 
+		 Thread thread = new Thread(new Server_GUI());
+		 thread.start();
 		
 		ServerController controller = new ServerController();
 		controller.init();
 	}
+	
+	
+	
+	
 
 	public void init(){
 
