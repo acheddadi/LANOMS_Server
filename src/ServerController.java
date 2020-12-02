@@ -65,7 +65,7 @@ public class ServerController implements ServerListener {
 		         backup();
 		     }
 		};
-		 timer.scheduleAtFixedRate(save, 0, 6000);
+		 timer.scheduleAtFixedRate(save, 0, 5000);
 		
 		ServerController controller = new ServerController();
 		controller.init();
