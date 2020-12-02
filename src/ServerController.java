@@ -11,6 +11,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class ServerController implements ServerListener {
@@ -55,6 +57,15 @@ public class ServerController implements ServerListener {
 				}
 			}
 		}
+		
+		 Timer timer = new Timer();
+		 TimerTask task= new TimerTask() {
+		     @Override
+		     public void run() {
+		         backup();
+		     }
+		};
+		 timer.scheduleAtFixedRate(task, 0, 60000);
 		
 		ServerController controller = new ServerController();
 		controller.init();
