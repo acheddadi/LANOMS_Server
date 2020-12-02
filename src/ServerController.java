@@ -26,8 +26,9 @@ public class ServerController implements ServerListener {
 
 	public static void main(String[] args) {
 		// Make accounts (can make it to load existing accounts in future).
-		boolean file = new File(".\\backup\\lastSave").exists();
-		if (!file)
+		File dir = new File(".\\backup\\lastSave");
+		boolean exist = dir.exists();
+		if (!exist)
 		{
 		makeAccounts();
 		makeConversation(0, 1);
@@ -43,7 +44,7 @@ public class ServerController implements ServerListener {
 		backup();
 		}
 		else {
-			File dir = new File(".\\backup\\lastSave");
+			
 			File [] files = dir.listFiles(new FilenameFilter() {
 			    public boolean accept(File dir, String name) {
 			        return name.endsWith(".lanoms");
@@ -65,7 +66,8 @@ public class ServerController implements ServerListener {
 		         backup();
 		     }
 		};
-		 timer.scheduleAtFixedRate(save, 0, 5000);
+		// Runs backup saves at 1000ms * 60 * 60 * 24. Every day
+		 timer.scheduleAtFixedRate(save, 0, 1000*60*60*24);
 		
 		ServerController controller = new ServerController();
 		controller.init();
