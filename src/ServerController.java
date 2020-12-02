@@ -59,13 +59,13 @@ public class ServerController implements ServerListener {
 		}
 		
 		 Timer timer = new Timer();
-		 TimerTask task= new TimerTask() {
+		 TimerTask save= new TimerTask() {
 		     @Override
 		     public void run() {
 		         backup();
 		     }
 		};
-		 timer.scheduleAtFixedRate(task, 0, 60000);
+		 timer.scheduleAtFixedRate(save, 0, 6000);
 		
 		ServerController controller = new ServerController();
 		controller.init();
