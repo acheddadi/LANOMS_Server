@@ -17,21 +17,6 @@ import java.util.TimerTask;
 
 public class ServerController implements ServerListener {
 
-	// static HashMap<String, Account> account = new HashMap<String, Account>();
-	
-	static class Server_GUI implements Runnable {
-		Server_GUI(){
-			
-		}
-
-		@Override
-		public void run() {
-			
-			
-		}
-		 
-	 }
-
 	static ArrayList<Account> account = new ArrayList<Account>();
 	static HashMap<String, Account> mapper = new HashMap<String, Account>();
 	
@@ -42,10 +27,10 @@ public class ServerController implements ServerListener {
 
 	public static void main(String[] args) {
 		// Make accounts (can make it to load existing accounts in future).
-		File dir = new File(".\\backup\\lastSave");
-		boolean exist = dir.exists();
-		if (!exist)
-		{
+		//File dir = new File(".\\backup\\lastSave");
+		//boolean exist = dir.exists();
+		//if (!exist)
+		//{
 		makeAccounts();
 		makeConversation(0, 1);
 		//makeConversation(1, 2);
@@ -57,36 +42,33 @@ public class ServerController implements ServerListener {
 		// User Index 1 adds index 0 to convo
 		//account.get(1).addToConvo(1, account.get(0));
 		
-		backup();
-		}
-		else {
-			
-			File [] files = dir.listFiles(new FilenameFilter() {
-			    public boolean accept(File dir, String name) {
-			        return name.endsWith(".lanoms");
-			    }
-			});
-			for (File lanoms : files) {
-				Account temp = pullAccount(lanoms);
-				if (mapper.get(temp.user.getUsername()) == null) {
-					mapper.put(temp.user.getUsername(), temp);
-					account.add(temp);
-				}
-			}
-		}
-		
-		 Timer timer = new Timer();
-		 TimerTask save= new TimerTask() {
-		     @Override
-		     public void run() {
-		         backup();
-		     }
-		};
-		// Runs backup saves at 1000ms * 60 * 60 * 24. Every day
-		 timer.scheduleAtFixedRate(save, 0, 1000*60*60*24);
-		 
-		 Thread thread = new Thread(new Server_GUI());
-		 thread.start();
+		//backup();
+		//}
+//		else {
+//			
+//			File [] files = dir.listFiles(new FilenameFilter() {
+//			    public boolean accept(File dir, String name) {
+//			        return name.endsWith(".lanoms");
+//			    }
+//			});
+//			for (File lanoms : files) {
+//				Account temp = pullAccount(lanoms);
+//				if (mapper.get(temp.user.getUsername()) == null) {
+//					mapper.put(temp.user.getUsername(), temp);
+//					account.add(temp);
+//				}
+//			}
+//		}
+//		
+//		 Timer timer = new Timer();
+//		 TimerTask save= new TimerTask() {
+//		     @Override
+//		     public void run() {
+//		         backup();
+//		     }
+//		};
+//		// Runs backup saves at 1000ms * 60 * 60 * 24. Every day
+//		 timer.scheduleAtFixedRate(save, 0, 1000*60*60*24);
 		
 		ServerController controller = new ServerController();
 		controller.init();
@@ -133,6 +115,7 @@ public class ServerController implements ServerListener {
 		// j = index of conversation array
 		// Output: number of messages in the conversation
 		return mapper.get(username).conversations.get(j).getChatLog().size() + "";
+		
 	}
 
 	public static String getMessage(String username, int j, int k) {
@@ -140,7 +123,7 @@ public class ServerController implements ServerListener {
 		// j = index of conversation array
 		// k = index of message array
 		// Output: The message as NAME \n MESSAGE
-
+		
 		return mapper.get(username).conversations.get(j).getChatLog().get(k).getSender().getUsername() + "\n"
 				+ mapper.get(username).conversations.get(j).getChatLog().get(k).getMessage();
 	}
@@ -188,6 +171,12 @@ public class ServerController implements ServerListener {
 		
 		Message mes = new Message(mapper.get(username).user, message);
 		mapper.get(username).conversations.get(ID).addMessage(mes, mapper.get(username).user);
+		System.out.println("ID IS: " + ID);
+		
+		
+		
+		System.out.println("makeMessage: " + mapper.get(username).conversations.get(ID));
+		System.out.println("getMessage: " + mapper.get("nik").getConvoID(mapper.get(username).conversations.get(ID)));
 	}
 	
 	public static void setStatus(String username, int stat) {
