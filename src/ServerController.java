@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -47,11 +46,11 @@ public class ServerController implements ServerListener {
 		File dir = new File(".\\backup\\lastSave");
 		boolean exist = dir.exists();
 		makeAccounts();
-		makeConversation(0, 1);
+		makeConversation("ali", "nik");
 		makeMessage("ali", 0, "Hello Nik");
 		makeMessage("nik", 0, "Hi Ali");
 		
-		makeConversation(0, 2);
+		makeConversation("ali", "shree");
 		makeMessage("ali", 1, "Hey Shree");
 
 		//makeConversation(2, 1);
@@ -156,13 +155,13 @@ public class ServerController implements ServerListener {
 		mapper.put(s.user.getUsername(), s);
 	}
 
-	public static void makeConversation(int i, int j) { // make conversations in server
+	public static void makeConversation(String user1, String user2) { // make conversations in server
 		// Input = User1 index, User 2 index
-		Conversation cov = new Conversation(account.get(i).user, account.get(j).user);
-		account.get(i).conversations.add(cov);
-		account.get(j).conversations.add(cov);
-		makeMessage(account.get(i).user.getUsername(), account.get(i).conversations.size()-1, "@server has joined the conversation.");
-		makeMessage(account.get(j).user.getUsername(), account.get(j).conversations.size()-1, "@server has joined the conversation.");
+		Conversation cov = new Conversation(mapper.get(user1).user, mapper.get(user2).user);
+		mapper.get(user1).conversations.add(cov);
+		mapper.get(user2).conversations.add(cov);
+		makeMessage(mapper.get(user1).user.getUsername(), mapper.get(user1).conversations.size()-1, "@server has joined the conversation.");
+		makeMessage(mapper.get(user2).user.getUsername(), mapper.get(user2).conversations.size()-1, "@server has joined the conversation.");
 	}
 	
 	public static void addToConvo(int userID1, int userID2, int convoID) {
@@ -332,9 +331,9 @@ public class ServerController implements ServerListener {
 						res = getMessage(parts[0], Utility.convertToInt(parts[1]),
 								Utility.convertToInt(parts[2]));
 						break;
-					case "MAKE_CONV":
+					case "MAKE_CONVO":
 						parts = data.getData().split("\n");
-						makeConversation(Utility.convertToInt(parts[0]), Utility.convertToInt(parts[1]));
+						makeConversation(parts[0], parts[1]);
 						break;
 					case "ADD_TO_CONVO":
 						parts = data.getData().split("\n");
