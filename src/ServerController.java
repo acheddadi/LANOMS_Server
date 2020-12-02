@@ -16,13 +16,30 @@ import java.util.TimerTask;
 
 
 public class ServerController implements ServerListener {
+	
+	static class UserIP {
+		private String username;
+		private String IP;
+		UserIP(String username, String IP){
+			this.username = username;
+			this.IP = IP;
+		}
+		protected String getIP(){
+			return this.IP;
+		}
+	
+		protected String getUsername() {
+			return this.username;
+		}
+		
+	}
 
 	static ArrayList<Account> account = new ArrayList<Account>();
 	static HashMap<String, Account> mapper = new HashMap<String, Account>();
 	
 	static HashMap<String, String> loggedIn = new HashMap<String, String>();
 	
-	static HashMap<String, Client> onlineClients = new HashMap<String, Client>();
+	static ArrayList<UserIP> onlineClients = new ArrayList<UserIP>(); 
 	
 
 	public static void main(String[] args) {
@@ -60,15 +77,15 @@ public class ServerController implements ServerListener {
 //			}
 //		}
 //		
-//		 Timer timer = new Timer();
-//		 TimerTask save= new TimerTask() {
-//		     @Override
-//		     public void run() {
-//		         backup();
-//		     }
-//		};
-//		// Runs backup saves at 1000ms * 60 * 60 * 24. Every day
-//		 timer.scheduleAtFixedRate(save, 0, 1000*60*60*24);
+		 Timer timer = new Timer();
+		 TimerTask save= new TimerTask() {
+		     @Override
+		     public void run() {
+		         backup();
+		     }
+		};
+		// Runs backup saves at 1000ms * 60 * 60 * 24. Every day
+		 timer.scheduleAtFixedRate(save, 0, 1000*60*60*24);
 		
 		ServerController controller = new ServerController();
 		controller.init();
@@ -153,6 +170,8 @@ public class ServerController implements ServerListener {
 		Conversation cov = new Conversation(account.get(i).user, account.get(j).user);
 		account.get(i).conversations.add(cov);
 		account.get(j).conversations.add(cov);
+		makeMessage(account.get(i).user.getUsername(), account.get(i).conversations.size()-1, " has joined the chat.");
+		makeMessage(account.get(j).user.getUsername(), account.get(j).conversations.size()-1, " has joined the chat.");
 	}
 
 	public static int checkValidLogin(String name, String pass) {
@@ -336,8 +355,16 @@ public class ServerController implements ServerListener {
 						parts = data.getData().split("\n");
                         res = checkValidLogin(parts[0], parts[1]) + "";
                         if(res.equals("1")) {
-                        	if (onlineClients.get(parts[0]) == null) {
-                        	onlineClients.put(parts[0], client);
+                        	boolean found = false;
+                        	setStatus(parts[0],1);
+                        	for (UserIP a : onlineClients) {
+                        		if (a.getUsername().equals(parts[0])) {
+                        			found = true;
+                        		}
+                        	}
+                        	if(!found) {
+                        		onlineClients.add(new UserIP(parts[0], client.getIp()));
+                        		System.out.println("USER CONNECTED: " + onlineClients.get(onlineClients.size() -1).getUsername() + " IP: " + onlineClients.get(onlineClients.size() -1).getIP());
                         	}
                         }
                         break;
@@ -362,13 +389,17 @@ public class ServerController implements ServerListener {
 	@Override
 	public void onAccept(Socket socket) {
 		System.out.println("User Connected from: " + socket.getRemoteSocketAddress().toString());
-		
 	}
 
 	@Override
 	public void onDisconnect(Socket socket) {
 		System.out.println("User Disconnected from: " + socket.getRemoteSocketAddress().toString());
-		
+		for (UserIP a : onlineClients) {
+			if (a.getIP().equals(socket.getRemoteSocketAddress().toString())) {
+				System.out.println("USER DISCONNECTED: " + a.getUsername() + " IP: " + a.getIP());
+				onlineClients.remove(a);
+			}
+		}
 	}
 
 	@Override

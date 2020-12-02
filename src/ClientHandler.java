@@ -114,4 +114,9 @@ public class ClientHandler implements Runnable, Client {
     writer.flush();
 
   }
+  
+  // gives the ip of the client
+  public String getIp() {
+	  return socket.getRemoteSocketAddress().toString();
+  }
 }
