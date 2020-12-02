@@ -60,7 +60,8 @@ public class ServerController implements ServerListener {
 		//makeConversation(2, 1);
 		//makeConversation(1, 2);
 		// User Index 1 adds index 0 to convo
-		//account.get(1).addToConvo(1, account.get(0));
+		addToConvo(0,2,0);
+		
 		
 		//backup();
 		//}
@@ -98,6 +99,7 @@ public class ServerController implements ServerListener {
 	
 	
 
+	
 	public void init(){
 
 		SocketServer socketServer = new SocketServer(9009, this);
@@ -105,6 +107,8 @@ public class ServerController implements ServerListener {
 		System.out.println("Socket Server Started");
 	}
 
+	
+	
 	public static String getUserCount() {
 		// Input - None
 		// Output - Number of users in the system
@@ -175,6 +179,11 @@ public class ServerController implements ServerListener {
 		account.get(j).conversations.add(cov);
 		makeMessage(account.get(i).user.getUsername(), account.get(i).conversations.size()-1, "@server has joined the chat.");
 		makeMessage(account.get(j).user.getUsername(), account.get(j).conversations.size()-1, "@server has joined the chat.");
+	}
+	
+	public static void addToConvo(int userID1, int userID2, int convoID) {
+		account.get(userID1).addToConvo(convoID, account.get(userID2));
+		makeMessage(account.get(userID2).user.getUsername(), account.get(userID2).conversations.size()-1, "@server has joined the chat.");
 	}
 
 	public static int checkValidLogin(String name, String pass) {
@@ -342,6 +351,10 @@ public class ServerController implements ServerListener {
 					case "MAKE_CONV":
 						parts = data.getData().split("\n");
 						makeConversation(Utility.convertToInt(parts[0]), Utility.convertToInt(parts[1]));
+						break;
+					case "ADD_TO_CONVO":
+						parts = data.getData().split("\n");
+						addToConvo(Utility.convertToInt(parts[0]), Utility.convertToInt(parts[1]), Utility.convertToInt(parts[2]));
 						break;
 					case "MAKE_MESSAGE":
 						parts = data.getData().split("\n");
