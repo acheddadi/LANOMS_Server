@@ -335,15 +335,8 @@ public class ServerController implements ServerListener {
 						break;
 					case "MAKE_MESSAGE":
 						parts = data.getData().split("\n");
-						String message = "";
-						int numParti = makeMessage(parts[0], Utility.convertToInt(parts[1]), parts[2]);
-						for (int i = 0; i < numParti; i++) {
-						String clientName = mapper.get(parts[0]).conversations.get(Utility.convertToInt(parts[1])).getParticipantList().get(0).getUsername();
-						message = parts[0] + "\n";
-						message = message + mapper.get(clientName).getConvoID(mapper.get(parts[0]).conversations.get(Utility.convertToInt(parts[1]))) + "\n";
-						message = message + parts[2];
-						onlineClients.get(clientName).send(data.getKey(),message);
-						}
+						makeMessage(parts[0], Utility.convertToInt(parts[1]), parts[2]);
+						res = "ping";
 						break;
 					case "ALL_STATUS":
 						res = getAllStatus();
