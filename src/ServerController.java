@@ -347,6 +347,7 @@ public class ServerController implements ServerListener {
 					case "MAKE_USER_INFO":
 						parts = data.getData().split("\n");
 						setUserInfo(parts[0], parts[1], parts[2]);
+						break;
 					case "CONV_COUNT":
 						res = getConversationCount(data.getData());
 						break;
