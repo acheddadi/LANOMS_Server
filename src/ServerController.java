@@ -394,6 +394,7 @@ public class ServerController implements ServerListener {
                         	if(!found) {
                         		onlineClients.add(new UserIP(parts[0], client.getIp()));
                         		System.out.println("USER CONNECTED: " + onlineClients.get(onlineClients.size() -1).getUsername() + " IP: " + onlineClients.get(onlineClients.size() -1).getIP());
+                        		mapper.get(parts[0]).uSettings.setStatus("Online");
                         	}
                         }
                         break;
